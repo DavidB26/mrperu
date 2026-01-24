@@ -1,0 +1,110 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo/logo-mrperu.webp";
+
+const links = [
+  { label: "Inicio", href: "#inicio" },
+  { label: "Videos", href: "#videos" },
+  { label: "Ventajas", href: "#ventajas" },
+  { label: "Testimonios", href: "#testimonios" },
+  { label: "Contacto", href: "#contacto" },
+];
+---
+
+<header class="fixed top-4 left-0 right-0 z-50">
+  <nav class="mx-auto w-[min(1100px,calc(100%-24px))] font-sans">
+    <div
+      class="flex items-center justify-between rounded-2xl px-4 sm:px-6 py-3
+             bg-white/15 backdrop-blur-xl ring-1 ring-white/25
+             shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+    >
+      <!-- Logo izquierdo -->
+      <a href="#inicio" class="flex items-center gap-3">
+        <Image
+          src={logo}
+          alt="MR Perú"
+          class="h-8 w-auto"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="hidden sm:block leading-none">
+          <span class="block font-title text-white text-sm tracking-wide">MR PERÚ</span>
+          <span class="block text-white/75 text-[11px]">Soluciones en Aire Comprimido</span>
+        </span>
+      </a>
+
+      <!-- Links (desktop) -->
+      <ul class="hidden md:flex items-center gap-6">
+        {links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class="text-white/85 hover:text-accent-sky transition text-sm font-medium"
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Right (CTA + logo on desktop, menu on mobile) -->
+      <div class="flex items-center gap-3">
+        <!-- CTA (desktop) -->
+        <a
+          href="#contacto"
+          class="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold
+                 bg-brand-cyan/80 hover:bg-brand-cyan text-white transition ring-1 ring-white/25"
+        >
+          Cotizar
+        </a>
+
+        <!-- Right logo (desktop) -->
+        <Image
+          src={logo}
+          alt="MR Perú"
+          class="hidden md:block h-7 w-auto opacity-90"
+          loading="eager"
+          decoding="async"
+        />
+
+        <!-- Mobile menu -->
+        <details class="relative md:hidden">
+          <summary
+            class="list-none inline-flex items-center justify-center rounded-full p-2
+                   bg-white/15 ring-1 ring-white/25 text-white/90 hover:text-white transition cursor-pointer"
+            aria-label="Abrir menú"
+          >
+            <!-- Hamburger icon -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </summary>
+
+          <div
+            class="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl
+                   bg-white/20 backdrop-blur-xl ring-1 ring-white/25 shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+          >
+            <div class="p-2">
+              {links.map((l) => (
+                <a
+                  href={l.href}
+                  class="block rounded-xl px-3 py-2 text-sm font-medium text-white/90 hover:bg-white/15 hover:text-white transition"
+                >
+                  {l.label}
+                </a>
+              ))}
+
+              <a
+                href="#contacto"
+                class="mt-2 block rounded-xl px-3 py-2 text-sm font-semibold text-white
+                       bg-brand-cyan/80 hover:bg-brand-cyan transition ring-1 ring-white/25 text-center"
+              >
+                Cotizar
+              </a>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </nav>
+</header>

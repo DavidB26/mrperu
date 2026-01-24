@@ -1,0 +1,7 @@
+ignoredBuiltDependencies:
+  - esbuild
+  - sharp
+
+onlyBuiltDependencies:
+  - fonttools
+  - ttf2woff2
