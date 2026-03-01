@@ -1,52 +1,10 @@
-@font-face {
-    font-family: "Aquawax";
-    src: url("/fonts/Aquawax-Light.woff2") format("woff2");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Aquawax";
-    src: url("/fonts/Aquawax-Medium.woff2") format("woff2");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: "Aquawax";
-    src: url("/fonts/Aquawax-Black.woff2") format("woff2");
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-  }
-  
-  @font-face {
-    font-family: "Couture";
-    src: url("/fonts/Couture.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+
   
   /* Tailwind v4 */
   @import "tailwindcss";
+
   
-  @theme {
-    /* fonts */
-    --font-title: Aquawax, system-ui, sans-serif;
-    --font-sans: "Open Sans", system-ui, sans-serif;
-    --font-numbers: Couture, "Open Sans", system-ui, sans-serif;
-  
-    /* colors */
-    --color-brand-primary: #0197C5;
-    --color-brand-cyan: #00B1D7;
-  
-    --color-neutral-700: #696F7A;
-    --color-neutral-300: #BDBFC1;
-    --color-neutral-100: #E6E7E8;
-  
-    --color-accent-sky: #91D8F7;
-    --color-accent-green: #2EA853;
-    --color-accent-orange: #F29434;
-    --color-accent-yellow: #FBBE2D;
+  html, body {
+    font-family: "aptos", sans-serif;
+    font-weight: 400; /* Regular */
   }

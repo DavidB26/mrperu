@@ -1,45 +1,44 @@
 ---
 import { Image } from "astro:assets";
-import logo from "../assets/logo/logo-mrperu.webp";
+import logo from "../assets/logo/mrperu-logo-web.png";
 
 const links = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Videos", href: "#videos" },
-  { label: "Ventajas", href: "#ventajas" },
-  { label: "Testimonios", href: "#testimonios" },
+  { label: "Beneficios", href: "#beneficios" },
+  { label: "Clientes", href: "#clientes" },
+  { label: "Casos de éxito", href: "#casos-de-exito" },
   { label: "Contacto", href: "#contacto" },
 ];
 ---
 
-<header class="fixed top-4 left-0 right-0 z-50">
+<header class="fixed top-0 left-0 right-0 z-50">
   <nav class="mx-auto w-[min(1100px,calc(100%-24px))] font-sans">
     <div
-      class="flex items-center justify-between rounded-2xl px-4 sm:px-6 py-3
-             bg-white/15 backdrop-blur-xl ring-1 ring-white/25
-             shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+      class="flex items-center justify-between px-6 py-4
+             bg-white shadow-[0_6px_18px_rgba(0,0,0,0.12)]"
     >
       <!-- Logo izquierdo -->
       <a href="#inicio" class="flex items-center gap-3">
         <Image
           src={logo}
           alt="MR Perú"
-          class="h-8 w-auto"
+          class="w-[81px] h-[81px] object-contain"
           loading="eager"
           decoding="async"
         />
-        <span class="hidden sm:block leading-none">
-          <span class="block font-title text-white text-sm tracking-wide">MR PERÚ</span>
-          <span class="block text-white/75 text-[11px]">Soluciones en Aire Comprimido</span>
-        </span>
       </a>
 
-      <!-- Links (desktop) -->
-      <ul class="hidden md:flex items-center gap-6">
+   
+      <ul class="hidden md:flex items-center gap-8">
         {links.map((l) => (
           <li>
             <a
               href={l.href}
-              class="text-white/85 hover:text-accent-sky transition text-sm font-medium"
+              class={
+                "transition text-[15px] font-semibold tracking-tight " +
+                (l.label === "Beneficios"
+                  ? "text-[#FBBE2E]"
+                  : "text-[#0197C5] hover:text-[#FBBE2E]")
+              }
             >
               {l.label}
             </a>
@@ -47,31 +46,25 @@ const links = [
         ))}
       </ul>
 
-      <!-- Right (CTA + logo on desktop, menu on mobile) -->
+     
       <div class="flex items-center gap-3">
-        <!-- CTA (desktop) -->
+
         <a
           href="#contacto"
-          class="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold
-                 bg-brand-cyan/80 hover:bg-brand-cyan text-white transition ring-1 ring-white/25"
+          class="hidden sm:inline-flex items-center justify-center rounded-xl px-5 py-2 text-[15px] font-semibold
+                 text-white transition
+                 bg-[#FBBE2E] hover:bg-[#F7B400]
+                 shadow-[0_6px_14px_rgba(0,0,0,0.18)]
+                 shadow-[inset_0_4.41px_12.12px_rgba(0,0,0,0.38),0_6px_14px_rgba(0,0,0,0.18)]"
         >
-          Cotizar
+          ¡Solicita diagnóstico gratis!
         </a>
-
-        <!-- Right logo (desktop) -->
-        <Image
-          src={logo}
-          alt="MR Perú"
-          class="hidden md:block h-7 w-auto opacity-90"
-          loading="eager"
-          decoding="async"
-        />
 
         <!-- Mobile menu -->
         <details class="relative md:hidden">
           <summary
-            class="list-none inline-flex items-center justify-center rounded-full p-2
-                   bg-white/15 ring-1 ring-white/25 text-white/90 hover:text-white transition cursor-pointer"
+            class="list-none inline-flex items-center justify-center rounded-xl p-2
+                   bg-slate-100 text-slate-800 hover:bg-slate-200 transition cursor-pointer"
             aria-label="Abrir menú"
           >
             <!-- Hamburger icon -->
@@ -81,14 +74,14 @@ const links = [
           </summary>
 
           <div
-            class="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl
-                   bg-white/20 backdrop-blur-xl ring-1 ring-white/25 shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
+            class="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl
+                   bg-white ring-1 ring-black/5 shadow-[0_12px_30px_rgba(0,0,0,0.16)]"
           >
             <div class="p-2">
               {links.map((l) => (
                 <a
                   href={l.href}
-                  class="block rounded-xl px-3 py-2 text-sm font-medium text-white/90 hover:bg-white/15 hover:text-white transition"
+                  class="block rounded-xl px-3 py-2 text-sm font-semibold text-[#0197C5] hover:bg-slate-50 hover:text-[#017AA3] transition"
                 >
                   {l.label}
                 </a>
@@ -96,10 +89,11 @@ const links = [
 
               <a
                 href="#contacto"
-                class="mt-2 block rounded-xl px-3 py-2 text-sm font-semibold text-white
-                       bg-brand-cyan/80 hover:bg-brand-cyan transition ring-1 ring-white/25 text-center"
+                class="mt-2 block rounded-xl px-3 py-2 text-sm font-semibold text-white text-center transition
+                       bg-[#FBBE2E] hover:bg-[#F7B400]
+                       shadow-[inset_0_4.41px_12.12px_rgba(0,0,0,0.38),0_6px_14px_rgba(0,0,0,0.18)]"
               >
-                Cotizar
+                ¡Solicita diagnóstico gratis!
               </a>
             </div>
           </div>
