@@ -1,0 +1,116 @@
+---
+const title = "CASOS DE ÉXITO";
+
+// Cambia estos paths por los tuyos (ideal: mp4 en /public/videos y thumbs en /public/thumbs)
+const videos = [
+  {
+    id: "caso-1",
+    label: "Caso 1",
+    src: "/videos/caso-principal.mp4",
+    poster: "/thumbs/caso-principal.jpg",
+  },
+  {
+    id: "caso-2",
+    label: "Caso 2",
+    src: "/videos/caso-2.mp4",
+    poster: "/thumbs/caso-2.jpg",
+  },
+  {
+    id: "caso-3",
+    label: "Caso 3",
+    src: "/videos/caso-3.mp4",
+    poster: "/thumbs/caso-3.jpg",
+  },
+];
+
+// Por defecto mostramos el primero en grande
+const main = videos[0];
+const thumbs = videos.slice(1, 3); // 2 thumbnails
+---
+
+<section id="casos" class="bg-white py-10 sm:py-14">
+  <div class="mx-auto w-[min(1400px,calc(100%-24px))]">
+    <!-- Pill título -->
+    <div class="relative mb-8 sm:mb-10">
+      <div class="h-px w-full bg-slate-200"></div>
+      <div class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
+        <div class="rounded-[14px] bg-white px-6 py-2 shadow-[0_10px_25px_rgba(0,0,0,0.18)] ring-1 ring-black/5">
+          <span class="text-[#0197C5] font-extrabold tracking-wide text-[14px] sm:text-[16px]">
+            {title}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout: grande + thumbs -->
+    <div class="grid gap-6 md:grid-cols-[1.35fr_0.65fr] md:items-stretch">
+      <!-- Player grande -->
+      <div class="overflow-hidden rounded-[22px] bg-white shadow-[0_22px_60px_rgba(0,0,0,0.22)] ring-1 ring-black/5">
+        <video
+          id="casos-main-video"
+          class="block w-full h-full aspect-video bg-black object-cover"
+          controls
+          playsinline
+          preload="metadata"
+          poster={main.poster}
+          data-src={main.src}
+        >
+          <source id="casos-main-source" src={main.src} type="video/mp4" />
+          Tu navegador no soporta videos HTML5.
+        </video>
+      </div>
+
+      <!-- Thumbnails (2) -->
+      <div class="grid gap-6 md:grid-rows-2">
+        {thumbs.map((t) => (
+          <button
+            type="button"
+            class="group relative overflow-hidden rounded-[18px] bg-white shadow-[0_18px_50px_rgba(0,0,0,0.20)] ring-1 ring-black/5
+                   focus:outline-none focus:ring-2 focus:ring-[#0197C5]/60"
+            data-video-src={t.src}
+            data-video-poster={t.poster}
+            aria-label={`Ver ${t.label}`}
+          >
+            {/* thumbnail como imagen */}
+            <img
+              src={t.poster}
+              alt={t.label}
+              class="block h-full w-full object-cover aspect-video"
+              loading="lazy"
+              decoding="async"
+            />
+
+            {/* overlay play */}
+            <span class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition"></span>
+            <span class="absolute left-3 bottom-3 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-extrabold text-[#0B5871] shadow">
+              ▶ Ver
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const mainVideo = document.getElementById("casos-main-video");
+  const mainSource = document.getElementById("casos-main-source");
+  if (mainVideo && mainSource) {
+    const buttons = document.querySelectorAll("[data-video-src][data-video-poster]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const src = btn.getAttribute("data-video-src");
+        const poster = btn.getAttribute("data-video-poster");
+        if (!src) return;
+
+        // Pausa y cambia
+        mainVideo.pause();
+        mainVideo.setAttribute("poster", poster || "");
+        mainSource.setAttribute("src", src);
+        mainVideo.load();
+        // opcional: autoplay al cambiar
+        // mainVideo.play().catch(() => {});
+      });
+    });
+  }
+</script>

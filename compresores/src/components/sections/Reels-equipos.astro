@@ -1,0 +1,271 @@
+---
+const title = "CONOCE MÁS DE NUESTROS EQUIPOS";
+
+
+const reels = [
+  { id: "r1", src: "/videos/reel-1.mp4", poster: "/thumbs/reel-1.jpg", caption: "El mejor costo" },
+  { id: "r2", src: "/videos/reel-2.mp4", poster: "/thumbs/reel-2.jpg", caption: "El mejor costo" },
+  { id: "r3", src: "/videos/reel-3.mp4", poster: "/thumbs/reel-3.jpg", caption: "El mejor costo" },
+  { id: "r4", src: "/videos/reel-4.mp4", poster: "/thumbs/reel-4.jpg", caption: "El mejor costo" },
+  { id: "r5", src: "/videos/reel-5.mp4", poster: "/thumbs/reel-5.jpg", caption: "El mejor costo" },
+];
+---
+
+<section id="equipos" class="bg-white pb-12 sm:pb-16">
+  <div class="mx-auto w-[min(1400px,calc(100%-24px))]">
+    <!-- pill title -->
+    <div class="relative mb-8 sm:mb-10">
+      <div class="h-px w-full bg-slate-200"></div>
+      <div class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
+        <div class="rounded-[14px] bg-white px-6 py-2 shadow-[0_10px_25px_rgba(0,0,0,0.18)] ring-1 ring-black/5">
+          <span class="text-[#0197C5] font-extrabold tracking-wide text-[14px] sm:text-[16px]">
+            {title}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div id="reelsTrack" class="reels-track">
+        {reels.map((r, i) => (
+          <button
+            type="button"
+            class={`reel-card ${i === 0 ? "is-active" : ""}`}
+            data-src={r.src}
+            data-poster={r.poster}
+            aria-label={`Abrir reel ${i + 1}`}
+          >
+            <img src={r.poster} alt="" class="reel-thumb" loading="lazy" decoding="async" />
+
+            <!-- play icon -->
+            <span class="reel-play" aria-hidden="true">▶</span>
+
+            <!-- caption (si quieres) -->
+            <span class="reel-caption">
+              <strong>{r.caption}</strong>
+              <small>las mejores máquinas para ti</small>
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <!-- fades laterales -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-white to-transparent"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="reelModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Video">
+      <button class="modal-close" type="button" data-close aria-label="Cerrar">✕</button>
+
+      <video
+        id="reelPlayer"
+        class="modal-video"
+        controls
+        playsinline
+        preload="metadata"
+      >
+        <source id="reelSource" src="" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* === Track (scroll + snap) === */
+  .reels-track{
+    display:flex;
+    gap:22px;
+    overflow-x:auto;
+    padding: 10px 6px 18px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .reels-track::-webkit-scrollbar{ display:none; }
+
+  /* === Card === */
+  .reel-card{
+    position:relative;
+    flex: 0 0 auto;
+    scroll-snap-align:start;
+
+    width: 260px;
+    height: 460px;
+
+    border-radius: 26px;
+    overflow:hidden;
+    background:#fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 22px 60px rgba(0,0,0,0.25);
+
+    transform: scale(0.88);
+    opacity: 0.72;
+    transition: transform .25s ease, opacity .25s ease;
+  }
+
+  .reel-card.is-active{
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .reel-thumb{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  .reel-play{
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:#0197C5;
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+
+  .reel-caption{
+    position:absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    text-align:center;
+    color:#fff;
+    padding: 0 10px;
+    text-shadow: 0 10px 24px rgba(0,0,0,0.45);
+  }
+  .reel-caption strong{ display:block; font-weight:900; font-size:14px; }
+  .reel-caption small{ display:block; font-size:11px; opacity:.95; }
+
+  @media (max-width: 640px){
+    .reel-card{ width: 220px; height: 390px; }
+    .reel-play{ width: 58px; height: 58px; }
+  }
+
+  /* === Modal === */
+  .modal{ position:fixed; inset:0; display:none; z-index:80; }
+  .modal.is-open{ display:block; }
+  .modal-backdrop{ position:absolute; inset:0; background: rgba(0,0,0,0.55); }
+  .modal-panel{
+    position:relative;
+    width: min(520px, calc(100% - 24px));
+    margin: 6vh auto 0;
+    background:#fff;
+    border-radius: 22px;
+    overflow:hidden;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+  }
+  .modal-close{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:40px;
+    height:40px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(0,0,0,0.08);
+    font-weight:900;
+  }
+  .modal-video{
+    width:100%;
+    aspect-ratio: 9 / 16;
+    background:#000;
+    display:block;
+    object-fit:cover;
+  }
+</style>
+
+<script is:inline>
+  const track = document.getElementById("reelsTrack");
+  const modal = document.getElementById("reelModal");
+  const player = document.getElementById("reelPlayer");
+  const source = document.getElementById("reelSource");
+
+  // --- Active card (left-most visible) ---
+  const setActive = () => {
+    if (!track) return;
+    const cards = [...track.querySelectorAll(".reel-card")];
+    const trackRect = track.getBoundingClientRect();
+
+    let best = null;
+    let bestDist = Infinity;
+
+    cards.forEach((c) => {
+      const r = c.getBoundingClientRect();
+
+      // must be at least partially visible inside the track viewport
+      const isVisible = r.right > trackRect.left + 10 && r.left < trackRect.right - 10;
+      if (!isVisible) return;
+
+      // distance from track's left edge to card's left edge
+      const dist = Math.abs(r.left - trackRect.left);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = c;
+      }
+    });
+
+    if (!best) best = cards[0];
+    cards.forEach((c) => c.classList.toggle("is-active", c === best));
+  };
+
+  let raf = null;
+  const onScroll = () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = null;
+      setActive();
+    });
+  };
+
+  if (track) {
+    setActive();
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", setActive);
+  }
+
+  // --- Modal open/close ---
+  const openModal = (src, poster) => {
+    if (!modal || !player || !source) return;
+    source.src = src;
+    player.poster = poster || "";
+    player.load();
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    if (!modal || !player || !source) return;
+    player.pause();
+    source.src = "";
+    player.load();
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  document.querySelectorAll("#reelsTrack .reel-card").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const src = btn.getAttribute("data-src");
+      const poster = btn.getAttribute("data-poster");
+      if (src) openModal(src, poster);
+    });
+  });
+
+  document.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", closeModal));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+</script>
