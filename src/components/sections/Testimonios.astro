@@ -60,19 +60,11 @@ const cards = [
 
       <div class="testimonios-stage">
         {cards.map((card, index) => {
-          const positionClass =
-            index === 0
-              ? "card-left-2"
-              : index === 1
-                ? "card-left-1"
-                : index === 2
-                  ? "card-center"
-                  : index === 3
-                    ? "card-right-1"
-                    : "card-right-2";
-
           return (
-            <article class:list={["testimonial-card", positionClass, card.featured && "is-featured"]}>
+            <article
+              class:list={["testimonial-card", index === 2 && "card-center", card.featured && "is-featured"]}
+              data-testimonial-index={index}
+            >
               <div class="testimonial-image-wrap">
                 <img
                   src={card.image}
@@ -95,6 +87,62 @@ const cards = [
   </div>
 </section>
 
+<script is:inline>
+  const stages = document.querySelectorAll('.testimonios-stage');
+
+  stages.forEach((stage) => {
+    const cards = Array.from(stage.querySelectorAll('[data-testimonial-index]'));
+    if (!cards.length) return;
+
+    let activeIndex = 2;
+    const total = cards.length;
+
+    const positionMap = [
+      'card-left-2',
+      'card-left-1',
+      'card-center',
+      'card-right-1',
+      'card-right-2',
+    ];
+
+    const applyPositions = () => {
+      cards.forEach((card, index) => {
+        card.classList.remove('card-left-2', 'card-left-1', 'card-center', 'card-right-1', 'card-right-2');
+
+        const offset = (index - activeIndex + total) % total;
+        const normalizedOffset = offset > Math.floor(total / 2) ? offset - total : offset;
+
+        let positionClass = 'card-right-2';
+
+        if (normalizedOffset <= -2) positionClass = 'card-left-2';
+        else if (normalizedOffset === -1) positionClass = 'card-left-1';
+        else if (normalizedOffset === 0) positionClass = 'card-center';
+        else if (normalizedOffset === 1) positionClass = 'card-right-1';
+        else if (normalizedOffset >= 2) positionClass = 'card-right-2';
+
+        card.classList.add(positionClass);
+      });
+    };
+
+    const goToNext = () => {
+      activeIndex = (activeIndex + 1) % total;
+      applyPositions();
+    };
+
+    applyPositions();
+
+    let interval = window.setInterval(goToNext, 2800);
+
+    stage.addEventListener('mouseenter', () => {
+      window.clearInterval(interval);
+    });
+
+    stage.addEventListener('mouseleave', () => {
+      interval = window.setInterval(goToNext, 2800);
+    });
+  });
+</script>
+
 <style>
   .testimonios-stage{
     position: relative;
@@ -111,10 +159,11 @@ const cards = [
     background: #fff;
     box-shadow: 0 18px 38px rgba(0,0,0,0.18);
     transform: translate(-50%, -50%) scale(.82);
-    opacity: .7;
+    opacity: 0;
     filter: blur(2px);
-    transition: transform .35s ease, opacity .35s ease, filter .35s ease, box-shadow .35s ease;
+    transition: transform .55s ease, opacity .55s ease, filter .55s ease, box-shadow .55s ease;
     z-index: 1;
+    will-change: transform, opacity, filter;
   }
 
   .testimonial-image-wrap{
@@ -153,11 +202,13 @@ const cards = [
   .card-left-2{
     transform: translate(calc(-50% - 310px), -50%) scale(.82);
     z-index: 1;
+    opacity: .42;
   }
 
   .card-left-1{
     transform: translate(calc(-50% - 155px), -50%) scale(.9);
     z-index: 2;
+    opacity: .72;
   }
 
   .card-center{
@@ -171,19 +222,13 @@ const cards = [
   .card-right-1{
     transform: translate(calc(-50% + 155px), -50%) scale(.9);
     z-index: 2;
+    opacity: .72;
   }
 
   .card-right-2{
     transform: translate(calc(-50% + 310px), -50%) scale(.82);
     z-index: 1;
-  }
-
-  .card-left-1,
-  .card-right-1,
-  .card-left-2,
-  .card-right-2{
-    opacity: .72;
-    filter: blur(2.2px);
+    opacity: .42;
   }
 
   @media (min-width: 640px){
@@ -263,27 +308,33 @@ const cards = [
 
     .card-left-2{
       transform: translate(calc(-50% - 118px), -50%) scale(.72);
-      opacity: .42;
+      opacity: .24;
+      z-index: 1;
     }
 
     .card-left-1{
       transform: translate(calc(-50% - 58px), -50%) scale(.82);
-      opacity: .58;
+      opacity: .55;
+      z-index: 2;
     }
 
     .card-center{
       transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      filter: blur(0);
       z-index: 4;
     }
 
     .card-right-1{
       transform: translate(calc(-50% + 58px), -50%) scale(.82);
-      opacity: .58;
+      opacity: .55;
+      z-index: 2;
     }
 
     .card-right-2{
       transform: translate(calc(-50% + 118px), -50%) scale(.72);
-      opacity: .42;
+      opacity: .24;
+      z-index: 1;
     }
   }
 </style>
