@@ -6,6 +6,7 @@ import linkedin from "../../assets/linkedin.svg";
 import youtube from "../../assets/youtube.svg";
 import facebook from "../../assets/facebook.svg";
 import instagram from "../../assets/instagram.svg";
+import atlasLogoWhite from "../../assets/AtlasLogoWhite.png";
 
 const year = new Date().getFullYear();
 const whatsappLink = "https://api.whatsapp.com/send/?phone=51997580486&text&type=phone_number&app_absent=0";
@@ -13,32 +14,32 @@ const whatsappLink = "https://api.whatsapp.com/send/?phone=51997580486&text&type
 const firstNavList = [
     {
         text: "Nosotros",
-        href: "#about-us",
+        href: "https://www.mrperu.com.pe/nosotros/",
         external: false,
     },
     {
         text: "Productos",
-        href: "#products",
+        href: "https://www.mrperu.com.pe/productos/",
         external: false,
     },
     {
         text: "Servicios",
-        href: "#services",
+        href: "https://www.mrperu.com.pe/servicios/",
         external: false,
     },
     {
         text: "Alquileres",
-        href: "#rent",
+        href: "https://www.mrperu.com.pe/alquileres/",
         external: false,
     },
     {
         text: "Contacto",
-        href: "#contact",
+        href: "https://www.mrperu.com.pe/contacto/",
         external: false,
     },
     {
         text: "Blog",
-        href: "https://www.google.com",
+        href: "https://www.mrperu.com.pe/blog/",
         external: true,
     },
 ];
@@ -46,32 +47,32 @@ const firstNavList = [
 const secondNavList = [
     {
         text: "Alquiler de Compresores",
-        href: "",
+        href: "https://www.mrperu.com.pe/alquileres/",
         external: true
     },
     {
         text: "Compresores de Aire",
-        href: "",
+        href: "https://www.mrperu.com.pe/productos/compresores-de-aire/",
         external: true
     },
     {
         text: "Secadores de Aire",
-        href: "",
+        href: "https://www.mrperu.com.pe/productos/secadores-de-aire/",
         external: true
     },
     {
         text: "Filtros de Aire",
-        href: "",
+        href: "https://www.mrperu.com.pe/productos/filtros-de-linea/",
         external: true
     },
     {
         text: "Tratamiento de Condensados",
-        href: "",
+        href: "https://www.mrperu.com.pe/productos/tratamiento-de-los-condensados/",
         external: true
     },
     {
         text: "Purgadores Automáticos",
-        href: "",
+        href: "https://www.mrperu.com.pe/productos/purgadores-automaticos/",
         external: true
     },
 ];
@@ -79,8 +80,8 @@ const secondNavList = [
 
 <footer class="bg-blue-mrperu pt-12 pb-4 sm:pt-16 lg:pt-20">
     <Wrapper>
-        <div class="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:gap-20 xl:gap-32">
-            <div class="flex flex-col items-center text-center lg:items-start lg:text-left">
+        <div class="flex flex-col gap-10 sm:gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16 xl:gap-24">
+            <div class="flex flex-col items-center text-center lg:min-w-[220px] lg:items-start lg:text-left">
                 <Image
                     src={logo}
                     alt="Logo MR Perú"
@@ -127,7 +128,7 @@ const secondNavList = [
                     </li>
                 )) }
             </ul>
-            <ul class="flex flex-col gap-3 text-center font-semibold sm:gap-4 lg:text-left">
+            <ul class="flex flex-col gap-3 text-center font-semibold sm:gap-4 lg:min-w-[320px] lg:text-left">
                 { secondNavList.map((item) => (
                     <li>
                         <a
@@ -140,8 +141,16 @@ const secondNavList = [
                     </li>
                 )) }
             </ul>
+            <div class="flex flex-col items-center text-center lg:min-w-[220px] lg:items-end lg:text-right">
+                <Image
+                    src={atlasLogoWhite}
+                    alt="Atlas Copco Distribuidor Autorizado"
+                    width={170}
+                    class="mx-auto lg:mx-0"
+                />
+            </div>
         </div>
-        <p class="mt-10 text-center text-sm text-white sm:mt-12 sm:text-base">
+        <p class="mt-10 text-center text-sm font-semibold text-white sm:mt-12 sm:text-base">
             © {year} MR Perú. Todos los derechos reservados.
         </p>
     </Wrapper>
