@@ -3,36 +3,68 @@ import Input from "../Input.astro";
 import Wrapper from "../Wrapper.astro";
 ---
 
-<section class="flex min-h-screen items-center bg-[url('../assets/bg-form-xs.webp')] bg-cover bg-center bg-no-repeat py-12 sm:min-h-0 sm:bg-[url('../assets/bg-form.webp')] sm:items-start sm:py-16 lg:py-20" id="contact">
-    <Wrapper>
-        <div class="mx-auto w-full max-w-[16rem] px-2 py-6 sm:mx-0 sm:max-w-[42rem] sm:px-0 sm:py-0 lg:max-w-[34rem]">
-            <h4 class="max-w-[13rem] text-pretty text-[1.05rem] font-bold leading-tight text-white sm:max-w-none sm:text-3xl lg:text-4xl">Obtén un diagnóstico gratuito para conocer tu consumo energético.</h4>
-            <form action="" class="mt-8 sm:mt-6">
-                <div class="flex flex-col gap-7 sm:gap-4">
-                    <div>
-                        <Input name="name" placeholder="Nombre y Apellido" />
-                    </div>
-                    <div>
-                        <Input name="company" placeholder="Empresa" />
-                    </div>
-                    <div>
-                        <Input name="email" placeholder="Email Corporativo" type="email" />
-                    </div>
-                    <div>
-                        <Input name="phone" placeholder="Teléfono" type="tel" />
-                    </div>
-                </div>
-                <button type="submit" class="mt-14 mx-auto block cursor-pointer rounded-full bg-yellow-mrperu px-7 py-2.5 text-[1rem] font-semibold text-white transition-colors duration-300 hover:bg-yellow-mrperu/80 active:bg-yellow-mrperu/60 sm:mt-8 sm:px-8 sm:text-xl">Enviar</button>
-            </form>
-        </div>
-    </Wrapper>
+<section
+  id="contacto"
+  class="relative isolate overflow-hidden bg-[url('../assets/bg-form-xs.webp')] bg-cover bg-center bg-no-repeat py-14 sm:bg-[url('../assets/bg-form.webp')] sm:py-16 lg:py-24"
+>
+  <div class="absolute inset-0 bg-black/45"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-black/20"></div>
+
+  <Wrapper>
+    <div class="relative z-10 flex justify-center sm:justify-start">
+      <div class="w-full max-w-[22rem] rounded-[28px] border border-white/15 bg-white/10 px-5 py-6 shadow-[0_18px_60px_rgba(0,0,0,0.30)] backdrop-blur-[10px] sm:max-w-[34rem] sm:px-8 sm:py-8 lg:max-w-[36rem] lg:px-10 lg:py-10">
+        <span class="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-white/85 sm:text-xs">
+          Diagnóstico gratuito
+        </span>
+
+        <h4 class="mt-4 max-w-none text-pretty text-[1.8rem] font-bold leading-[1.05] text-white sm:text-[2.35rem] lg:text-[2.8rem]">
+          Obtén un diagnóstico gratuito para conocer tu consumo energético.
+        </h4>
+
+        <p class="mt-3 max-w-[30rem] text-sm leading-6 text-white/80 sm:text-[0.98rem]">
+          Completa tus datos y nuestro equipo te contactará para evaluar tu consumo y proponerte una solución más eficiente.
+        </p>
+
+        <form id="contact-form" action="" class="mt-8 sm:mt-7">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4">
+            <div class="sm:col-span-2">
+              <Input name="name" placeholder="Nombre y apellido" />
+            </div>
+            <div class="sm:col-span-2">
+              <Input name="company" placeholder="Empresa" />
+            </div>
+            <div>
+              <Input name="email" placeholder="Email corporativo" type="email" />
+            </div>
+            <div>
+              <Input name="phone" placeholder="Teléfono" type="tel" />
+            </div>
+          </div>
+
+          <div class="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-xs leading-5 text-white/70 sm:max-w-[16rem]">
+              Al enviar este formulario, aceptas ser contactado por nuestro equipo comercial.
+            </p>
+
+            <button
+              type="submit"
+              class="inline-flex min-h-[3.25rem] items-center justify-center rounded-full bg-yellow-mrperu px-8 py-3 text-[1rem] font-semibold text-white shadow-[inset_0_4.41px_12.12px_rgba(0,0,0,0.22),0_10px_28px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-mrperu/90 active:translate-y-0"
+            >
+              Enviar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </Wrapper>
 </section>
 
-<script>
-    const form = document.querySelector("form");
-    form?.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        console.log(formData);
-    });
+<script is:inline>
+  const form = document.querySelector('#contact-form');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    console.log(Object.fromEntries(formData.entries()));
+  });
 </script>

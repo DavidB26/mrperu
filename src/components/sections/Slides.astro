@@ -1,0 +1,330 @@
+---
+import { Image } from "astro:assets";
+
+import bgSlide1Lg from "../../assets/slides/bg-slide-1-lg.webp";
+import bgSlide1Xs from "../../assets/slides/bg-slide-1-xs.webp";
+import bgSlide2Lg from "../../assets/slides/bg-slide-2-lg.webp";
+import bgSlide2Xs from "../../assets/slides/bg-slide-2-xs.webp";
+import bgSlide3Lg from "../../assets/slides/bg-slide-3-lg.webp";
+import bgSlide3Xs from "../../assets/slides/bg-slide-3-xs.webp";
+
+const slides = [
+  {
+    id: "slide-1",
+    href: "#slide-1",
+    desktop: bgSlide1Lg,
+    mobile: bgSlide1Xs,
+    alt: "Slide 1 MR Perú",
+  },
+  {
+    id: "slide-2",
+    href: "#slide-2",
+    desktop: bgSlide2Lg,
+    mobile: bgSlide2Xs,
+    alt: "Slide 2 MR Perú",
+  },
+  {
+    id: "slide-3",
+    href: "#slide-3",
+    desktop: bgSlide3Lg,
+    mobile: bgSlide3Xs,
+    alt: "Slide 3 MR Perú",
+  },
+];
+---
+
+<section class="slides-section relative w-full overflow-hidden bg-white" aria-label="Slider principal">
+  <div class="slides-shell relative w-full">
+    <div class="slides-track" data-slides-track>
+      {slides.map((slide, index) => (
+        <a
+          href={slide.href}
+          class:list={["slide-item", index === 0 && "is-active"]}
+          data-slide={index}
+          aria-label={`Ir al slide ${index + 1}`}
+        >
+          <Image
+            src={slide.desktop}
+            alt={slide.alt}
+            class="slide-media slide-media-desktop"
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            sizes="100vw"
+          />
+          <Image
+            src={slide.mobile}
+            alt={slide.alt}
+            class="slide-media slide-media-mobile"
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            sizes="100vw"
+          />
+        </a>
+      ))}
+    </div>
+
+    <button
+      type="button"
+      class="slides-arrow slides-arrow-left"
+      data-slides-prev
+      aria-label="Slide anterior"
+    >
+      <span aria-hidden="true">‹</span>
+    </button>
+
+    <button
+      type="button"
+      class="slides-arrow slides-arrow-right"
+      data-slides-next
+      aria-label="Slide siguiente"
+    >
+      <span aria-hidden="true">›</span>
+    </button>
+
+    <!-- <div class="slides-dots" aria-label="Indicadores del slider">
+      {slides.map((_, index) => (
+        <button
+          type="button"
+          class:list={["slides-dot", index === 0 && "is-active"]}
+          data-slides-dot={index}
+          aria-label={`Mostrar slide ${index + 1}`}
+        ></button>
+      ))}
+    </div> -->
+  </div>
+</section>
+
+<script is:inline>
+  const sections = document.querySelectorAll('.slides-section');
+
+  sections.forEach((section) => {
+    const slides = Array.from(section.querySelectorAll('[data-slide]'));
+    const dots = Array.from(section.querySelectorAll('[data-slides-dot]'));
+    const prevButton = section.querySelector('[data-slides-prev]');
+    const nextButton = section.querySelector('[data-slides-next]');
+
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+    let intervalId;
+
+    const updateSlider = () => {
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('is-active', index === activeIndex);
+      });
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === activeIndex);
+      });
+    };
+
+    const stopAutoplay = () => {
+      window.clearInterval(intervalId);
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      intervalId = window.setInterval(() => {
+        activeIndex = (activeIndex + 1) % slides.length;
+        updateSlider();
+      }, 5000);
+    };
+
+    const goTo = (index) => {
+      activeIndex = index;
+      updateSlider();
+      startAutoplay();
+    };
+
+    const goPrev = () => {
+      activeIndex = (activeIndex - 1 + slides.length) % slides.length;
+      updateSlider();
+      startAutoplay();
+    };
+
+    const goNext = () => {
+      activeIndex = (activeIndex + 1) % slides.length;
+      updateSlider();
+      startAutoplay();
+    };
+
+    prevButton?.addEventListener('click', goPrev);
+    nextButton?.addEventListener('click', goNext);
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goTo(index));
+    });
+
+    section.addEventListener('mouseenter', stopAutoplay);
+    section.addEventListener('mouseleave', startAutoplay);
+    section.addEventListener('focusin', stopAutoplay);
+    section.addEventListener('focusout', startAutoplay);
+
+    updateSlider();
+    startAutoplay();
+  });
+</script>
+
+<style>
+  .slides-section{
+    position: relative;
+  }
+
+  .slides-shell{
+    position: relative;
+    width: 100%;
+  }
+
+  .slides-track{
+    position: relative;
+    width: 100%;
+    height: 800px;
+  }
+
+  .slide-item{
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease;
+  }
+
+  .slide-item.is-active{
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .slide-media{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slide-media-desktop{
+    display: block;
+  }
+
+  .slide-media-mobile{
+    display: none;
+  }
+
+  .slides-arrow{
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.92);
+    color: #0b5871;
+    box-shadow: 0 10px 24px rgba(0,0,0,.16);
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+
+  .slides-arrow:hover{
+    transform: translateY(-50%) scale(1.06);
+    box-shadow: 0 14px 28px rgba(0,0,0,.2);
+    background: #fff;
+  }
+
+  .slides-arrow > span{
+    display: block;
+    font-size: 30px;
+    line-height: 1;
+    transform: translateY(-1px);
+  }
+
+  .slides-arrow-left{
+    left: 16px;
+  }
+
+  .slides-arrow-left > span{
+    transform: translate(-1px, -1px);
+  }
+
+  .slides-arrow-right{
+    right: 16px;
+  }
+
+  .slides-arrow-right > span{
+    transform: translate(1px, -1px);
+  }
+
+  .slides-dots{
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(-50%);
+  }
+
+  .slides-dot{
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.55);
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    cursor: pointer;
+    transition: transform .25s ease, background .25s ease;
+  }
+
+  .slides-dot.is-active{
+    background: #ffffff;
+    transform: scale(1.22);
+  }
+
+  @media (max-width: 767px){
+    .slides-track{
+      height: 730px;
+    }
+
+    .slide-media-desktop{
+      display: none;
+    }
+
+    .slide-media-mobile{
+      display: block;
+    }
+
+    .slides-arrow{
+      width: 38px;
+      height: 38px;
+    }
+
+    .slides-arrow-left{
+      left: 10px;
+    }
+
+    .slides-arrow-right{
+      right: 10px;
+    }
+
+    .slides-dots{
+      bottom: 10px;
+      gap: 8px;
+    }
+
+    .slides-dot{
+      width: 8px;
+      height: 8px;
+    }
+  }
+</style>

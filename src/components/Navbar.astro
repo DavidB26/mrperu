@@ -10,17 +10,18 @@ const links = [
 ];
 ---
 
-<header class="sticky top-0 left-0 right-0 z-50">
-  <nav class="mx-auto w-[min(1100px,calc(100%-24px))] font-sans">
+<header id="site-header" class="z-50 transition-all duration-300">
+  <nav id="site-nav" class="mx-auto w-full font-sans transition-all duration-300">
     <div
-      class="flex items-center justify-between px-6 py-4"
+      id="site-nav-inner"
+      class="mx-auto flex w-[min(1100px,calc(100%-24px))] items-center justify-between px-6 py-4 transition-all duration-300"
     >
       <!-- Logo izquierdo -->
-      <a href="#inicio" class="flex items-center gap-3">
+      <a href="/" class="flex items-center gap-3">
         <Image
           src={logo}
           alt="MR Perú"
-          class="w-[81px] h-[81px] object-contain"
+          class="w-[72px] h-[72px] object-contain"
           loading="eager"
           decoding="async"
         />
@@ -60,40 +61,58 @@ const links = [
         </a>
 
         <!-- Mobile menu -->
-        <details class="relative md:hidden">
+        <details id="mobile-menu" class="md:hidden">
           <summary
-            class="list-none inline-flex items-center justify-center rounded-xl p-2
-                   bg-slate-100 text-slate-800 hover:bg-slate-200 transition cursor-pointer"
+            class="list-none inline-flex items-center justify-center rounded-xl p-2 bg-slate-100 text-slate-800 hover:bg-slate-200 transition cursor-pointer"
             aria-label="Abrir menú"
           >
-            <!-- Hamburger icon -->
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <span class="mobile-menu-icon mobile-menu-icon-open" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="mobile-menu-icon mobile-menu-icon-close" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
           </summary>
 
-          <div
-            class="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl
-                   bg-white ring-1 ring-black/5 shadow-[0_12px_30px_rgba(0,0,0,0.16)]"
-          >
-            <div class="p-2">
-              {links.map((l) => (
-                <a
-                  href={l.href}
-                  class="block rounded-xl px-3 py-2 text-sm font-semibold text-blue-mrperu hover:bg-slate-50 hover:text-[#017AA3] transition"
-                >
-                  {l.label}
+          <div class="mobile-menu-panel fixed inset-0 z-[70] h-screen w-screen bg-white">
+            <div class="mobile-menu-panel-inner flex h-full w-full flex-col">
+              <div class="flex items-center justify-between px-6 py-5">
+                <a href="#inicio" class="flex items-center gap-3">
+                  <Image
+                    src={logo}
+                    alt="MR Perú"
+                    class="w-[72px] h-[72px] object-contain"
+                    loading="eager"
+                    decoding="async"
+                  />
                 </a>
-              ))}
 
-              <a
-                href="#contacto"
-                class="mt-2 block rounded-xl px-3 py-2 text-sm font-semibold text-white text-center transition
-                       bg-yellow-mrperu hover:bg-[#F7B400]
-                       shadow-[inset_0_4.41px_12.12px_rgba(0,0,0,0.38),0_6px_14px_rgba(0,0,0,0.18)]"
-              >
-                ¡Solicita diagnóstico gratis!
-              </a>
+            
+              </div>
+
+              <div class="flex flex-1 items-center justify-center px-6 pb-10">
+                <div class="flex w-full max-w-[320px] flex-col items-center gap-4 text-center">
+                  {links.map((l) => (
+                    <a
+                      href={l.href}
+                      class="mobile-menu-link block w-full rounded-2xl px-4 py-3 text-lg font-semibold text-blue-mrperu transition hover:bg-slate-50 hover:text-[#017AA3]"
+                    >
+                      {l.label}
+                    </a>
+                  ))}
+
+                  <a
+                    href="#contacto"
+                    class="mobile-menu-link mt-2 inline-flex w-full items-center justify-center rounded-2xl px-5 py-3 text-base font-semibold text-white text-center transition bg-yellow-mrperu hover:bg-[#F7B400] shadow-[inset_0_4.41px_12.12px_rgba(0,0,0,0.38),0_6px_14px_rgba(0,0,0,0.18)]"
+                  >
+                    ¡Solicita diagnóstico gratis!
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </details>
@@ -101,3 +120,131 @@ const links = [
     </div>
   </nav>
 </header>
+
+<script is:inline>
+  const header = document.getElementById('site-header');
+  const nav = document.getElementById('site-nav');
+  const navInner = document.getElementById('site-nav-inner');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+  const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+  const syncHeaderOnScroll = () => {
+    const isScrolled = window.scrollY > 8;
+
+    if (header) {
+      header.classList.toggle('fixed', isScrolled);
+      header.classList.toggle('top-0', isScrolled);
+      header.classList.toggle('left-0', isScrolled);
+      header.classList.toggle('right-0', isScrolled);
+      header.classList.toggle('w-full', isScrolled);
+      header.classList.toggle('bg-white', isScrolled);
+      header.classList.toggle('shadow-[0_10px_30px_rgba(0,0,0,0.08)]', isScrolled);
+    }
+
+    if (navInner) {
+      navInner.classList.toggle('py-4', !isScrolled);
+      navInner.classList.toggle('py-3', isScrolled);
+      navInner.classList.toggle('w-[min(1100px,calc(100%-24px))]', true);
+      navInner.classList.toggle('mx-auto', true);
+    }
+  };
+
+  const closeMobileMenu = () => {
+    if (mobileMenu) {
+      mobileMenu.removeAttribute('open');
+      document.body.classList.remove('overflow-hidden');
+    }
+  };
+
+  const toggleBodyScroll = () => {
+    if (!mobileMenu) return;
+
+    if (mobileMenu.hasAttribute('open')) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  };
+
+  syncHeaderOnScroll();
+  window.addEventListener('scroll', syncHeaderOnScroll, { passive: true });
+
+  if (mobileMenu) {
+    mobileMenu.addEventListener('toggle', toggleBodyScroll);
+  }
+
+  if (mobileMenuClose) {
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+  }
+
+  mobileMenuLinks.forEach((link) => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+</script>
+
+<style>
+  #mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #mobile-menu > summary {
+    position: relative;
+    z-index: 80;
+  }
+
+  #mobile-menu > summary .mobile-menu-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  #mobile-menu > summary .mobile-menu-icon-close {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(0.8) rotate(-90deg);
+  }
+
+  #mobile-menu[open] > summary .mobile-menu-icon-open {
+    opacity: 0;
+    transform: scale(0.8) rotate(90deg);
+  }
+
+  #mobile-menu[open] > summary .mobile-menu-icon-close {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  #mobile-menu > .mobile-menu-panel {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition:
+      opacity 0.28s ease,
+      transform 0.32s ease,
+      visibility 0.32s ease;
+  }
+
+  #mobile-menu > .mobile-menu-panel .mobile-menu-panel-inner {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+    transition:
+      opacity 0.34s ease,
+      transform 0.38s ease;
+  }
+
+  #mobile-menu[open] > .mobile-menu-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  #mobile-menu[open] > .mobile-menu-panel .mobile-menu-panel-inner {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+</style>
